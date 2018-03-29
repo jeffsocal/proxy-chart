@@ -1,0 +1,22 @@
+{
+  "name": "jeffsocal/proxy-chart",
+  "type": "library",
+  "description": "PHP integration of Plotly.js",
+  "keywords": ["Plotly"],
+  "homepage": "https://github.com/jeffsocal/proxy-chart/",
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "autoload": {
+    "psr-4": { "ProxyChart\\": "src/" }
+  },
+  "authors": [
+    {
+      "name": "Jeff Jones",
+      "email": "jeff@socalbioinformatics.com",
+      "homepage": "https://github.com/jeffsocal",
+      "role": "Developer"
+    }
+  ],
+  "license": "MIT"
+}
