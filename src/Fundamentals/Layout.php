@@ -60,6 +60,7 @@ class Layout
         $layout["yaxis"] = [
             "title" => "'" . $this->str_ytitle . "'"
         ];
+        $layout["height"] = 240;
         $layout["margin"] = [
             "t" => 80,
             "b" => 40,
@@ -71,7 +72,7 @@ class Layout
         
         return $layout;
     }
-
+    
     function getButtonMenu()
     {
         $layout["modeBarButtonsToRemove"] = [

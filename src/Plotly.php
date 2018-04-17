@@ -46,6 +46,32 @@ class Plotly extends Charts
         $this->addToJsOut($json_txt);
     }
 
+    function timeseries()
+    {
+        $this->sortTable($this->x_col);
+        $style = array(
+            "type" => "'scatter'",
+            "mode" => "'lines+markers'"
+        );
+        
+        $org_table = $this->getInputTable();
+        $org_x = $this->x_col;
+        $org_y = $this->y_col;
+        
+        $org_table[$org_x] = preg_filter('/^/', "'", $org_table[$org_x]);
+        $org_table[$org_y] = preg_filter('/^/', "'", $org_table[$org_y]);
+        
+        $org_table[$org_x] = preg_filter('/$/', "'", $org_table[$org_x]);
+        $org_table[$org_y] = preg_filter('/$/', "'", $org_table[$org_y]);
+        
+        $this->data($org_table, $org_x, $org_y);
+        
+        $json_txt = $this->arrayToJSON($this->createChart($style));
+        $this->addToJsOut($json_txt);
+        
+        $this->data($org_table, $org_x, $org_y);
+    }
+
     function point()
     {
         $this->sortTable($this->x_col);
