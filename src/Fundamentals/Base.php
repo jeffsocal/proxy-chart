@@ -63,6 +63,8 @@ class Base extends Layout
 
     protected $gby_col;
 
+    protected $cby_col;
+
     protected $lby_col;
 
     private $js_output;
@@ -112,6 +114,24 @@ class Base extends Layout
         $this->gby_col = $variable;
     }
 
+    function colorby($variable, $function = 'array_count')
+    {
+        $this->cby_col = $variable;
+    }
+
+    protected function colors($n)
+    {
+        $c = [
+            'red',
+            'blue',
+            'orange',
+            'purple',
+            'yellow',
+            'green'
+        ];
+        return array_slice($c, 0, $n);
+    }
+
     function labels($variable)
     {
         $this->lby_col = $variable;
@@ -124,10 +144,23 @@ class Base extends Layout
         if (! is_null($this->z_col))
             $this->table_array[$this->z_col] = array_normalize(array_values($this->table_array[$this->z_col]), 50);
         
+        if (! is_null($this->cby_col)) {
+            
+            $vals = array_unique($this->table_array[$this->cby_col]);
+            
+            $clrs = $this->colors(count($vals));
+            $this->table_array['colorbyvalue'] = array_fill(0, table_length($this->table_array), 'red');
+            
+            foreach ($vals as $i => $val) {
+                $keys = array_flip(array_keys($this->table_array[$this->cby_col], $val));
+                $keys = preg_replace("/.+/", $clrs[$i], $keys);
+                $this->table_array['colorbyvalue'] = array_replace($this->table_array['colorbyvalue'], $keys);
+            }
+        }
+        
         if (! is_null($this->gby_col)) {
             $this->data_array = table_split($this->table_array, $this->gby_col);
         } else {
-            
             $this->data_array['y~x'] = $this->table_array;
         }
         

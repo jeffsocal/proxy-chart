@@ -46,27 +46,29 @@ class Plotly extends Charts
         $this->addToJsOut($json_txt);
     }
 
-    function timeseries()
+    function timeseries($date_format = 'Y-m')
     {
-        $this->sortTable($this->x_col);
         $style = array(
             "type" => "'scatter'",
-            "mode" => "'lines+markers'"
+            "mode" => "'markers'"
         );
         
         $org_table = $this->getInputTable();
         $org_x = $this->x_col;
         $org_y = $this->y_col;
         
-        $org_table[$org_x] = preg_filter('/^/', "'", $org_table[$org_x]);
-        $org_table[$org_y] = preg_filter('/^/', "'", $org_table[$org_y]);
-        
-        $org_table[$org_x] = preg_filter('/$/', "'", $org_table[$org_x]);
-        $org_table[$org_y] = preg_filter('/$/', "'", $org_table[$org_y]);
+        for ($i = 0; $i < table_length($org_table); $i ++) {
+            $org_table[$org_x][$i] = date($date_format, strtotime($org_table[$org_x][$i]));
+        }
         
         $this->data($org_table, $org_x, $org_y);
+
+        $this->xstr();
+        $this->ystr();
         
-        $json_txt = $this->arrayToJSON($this->createChart($style));
+        $json_array = $this->createChart($style);
+        $json_txt = $this->arrayToJSON($json_array);
+        
         $this->addToJsOut($json_txt);
         
         $this->data($org_table, $org_x, $org_y);
@@ -121,7 +123,9 @@ class Plotly extends Charts
             'orientation' => "'" . $orientation . "'"
         );
         
-        $json_txt = $this->arrayToJSON($this->createChart($style));
+        $json_array = $this->createChart($style);
+        $json_txt = $this->arrayToJSON($json_array);
+        
         $this->addToJsOut($json_txt);
     }
 
