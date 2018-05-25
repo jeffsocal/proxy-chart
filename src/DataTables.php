@@ -27,7 +27,9 @@ class DataTables extends Tables
     {
         return '<script>' . "
                     $(document).ready( function () {
-                        $('#" . $this->table_id . "').DataTable();
+                        $('#" . $this->table_id . "').DataTable({
+                           \"order\": []
+                        });
                     } );
                 " . '</script>' . PHP_EOL;
     }
