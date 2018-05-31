@@ -62,7 +62,7 @@ class Plotly extends Charts
         }
         
         $this->data($org_table, $org_x, $org_y);
-
+        
         $this->xstr();
         $this->ystr();
         
@@ -99,23 +99,31 @@ class Plotly extends Charts
         $this->addToJsOut($json_txt);
     }
 
-    function bar($orientation = 'v')
+    function bar($orientation = 'v', $sort = TRUE)
     {
-        $this->sortTable($this->x_col);
-        $this->groupby($this->x_col);
+        if (is_true($sort))
+            $this->sortTable($this->x_col);
         
-        $this->mungeData();
-        foreach ($this->data_array as $group => $table) {
-            $new_table[$this->x_col][] = "'" . $group . "'";
-            $new_table['count'][] = table_length($table);
+        if (is_null($this->y_col)) {
+            $this->groupby($this->x_col);
+            $this->mungeData();
+            foreach ($this->data_array as $group => $table) {
+                $new_table[$this->x_col][] = "'" . $group . "'";
+                $new_table['count'][] = table_length($table);
+            }
+        } else {
+            $new_table = $this->getInputTable();
+            $new_table['count'] = $new_table[$this->y_col];
         }
         
         $this->groupby(NULL);
         
         if ($orientation == 'v') {
             $this->data($new_table, $this->x_col, 'count');
+            $this->xstr();
         } else {
             $this->data($new_table, 'count', $this->x_col);
+            $this->ystr();
         }
         
         $style = array(
@@ -183,7 +191,8 @@ class Plotly extends Charts
             'hole' => $hole
         );
         
-        $json_txt = $this->arrayToJSON($this->createChart($style, true));
+        $this->ystr();
+        $json_txt = $this->arrayToJSON($this->createChart($style));
         
         $json_txt = preg_replace("/x\:/", "values:", $json_txt);
         $json_txt = preg_replace("/y\:/", "labels:", $json_txt);

@@ -38,15 +38,15 @@ class Charts extends Base
             $this->addToDatasets($this_ds);
             
             if (is_true($this->str_xval)) {
-                $table[$this->x_col] = preg_filter('/^/', "'", $table[$this->x_col]);
-                $table[$this->x_col] = preg_filter('/$/', "'", $table[$this->x_col]);
+                $table[$this->x_col] = preg_filter('/^[\'\"]*/', "'", $table[$this->x_col]);
+                $table[$this->x_col] = preg_filter('/[\'\"]*$/', "'", $table[$this->x_col]);
             }
             $array_out[$this_ds]['x'] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', array_values($table[$this->x_col]));
             
             if (! is_null($this->y_col) && is_false($singleAxis)) {
                 if (is_true($this->str_yval)) {
-                    $table[$this->y_col] = preg_filter('/$/', "'", $table[$this->y_col]);
-                    $table[$this->y_col] = preg_filter('/^/', "'", $table[$this->y_col]);
+                    $table[$this->y_col] = preg_filter('/^[\'\"]*/', "'", $table[$this->y_col]);
+                    $table[$this->y_col] = preg_filter('/[\'\"]*$/', "'", $table[$this->y_col]);
                 }
                 $array_out[$this_ds]['y'] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', array_values($table[$this->y_col]));
             }
@@ -78,8 +78,8 @@ class Charts extends Base
             $json_txt .= json_encode($plot_data, JSON_NUMERIC_CHECK) . ";" . PHP_EOL;
             $json_txt .= PHP_EOL;
         }
-        $json_txt = preg_replace("/\"/", '', $json_txt);
-        $json_txt = preg_replace("/\'/", '"', $json_txt);
+        $json_txt = preg_replace("/\"+/", '', $json_txt);
+        $json_txt = preg_replace("/\'+/", '"', $json_txt);
         
         return $json_txt;
     }

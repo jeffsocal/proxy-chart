@@ -145,7 +145,6 @@ class Base extends Layout
             $this->table_array[$this->z_col] = array_normalize(array_values($this->table_array[$this->z_col]), 50);
         
         if (! is_null($this->cby_col)) {
-            
             $vals = array_unique($this->table_array[$this->cby_col]);
             
             $clrs = $this->colors(count($vals));
