@@ -74,7 +74,7 @@ class Base extends Layout
     {
         parent::__construct();
         
-        $this->imports = 'https://cdn.plot.ly/plotly-latest.min.js';
+        $this->imports = 'js/plotly-latest.min.js';
         $this->gby_col = NULL;
     }
 

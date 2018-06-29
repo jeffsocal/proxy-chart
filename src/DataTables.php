@@ -20,7 +20,7 @@ class DataTables extends Tables
 
     public function getImports()
     {
-        return 'https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js';
+        return 'js/jquery.dataTables.min.js';
     }
 
     public function getTableJS()
